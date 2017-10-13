@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Socket.IO Chat Example</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+	<script src="/vue.js"></script>
+</head>
+
+<body>
+	<div id="chatapp">
+		<ul class="pages">
+			<li class="chat page" v-if="seen">
+				<div class="col-md-8" style="height:100%">
+
+					<div class="chatArea">
+						<ul class="messages">
+							<div class="row text-center">{{message}}</div>
+							<li v-for="listitem in messagearray">
+								<div class="row" v-if="listitem.type === 'usermessage'">
+									<span v-bind:style="{ color: getUsernameColor(listitem.sendusername) }">{{listitem.sendusername}}::</span>
+									<span>{{listitem.sendmessage}}</span>
+								</div>
+								<div class="row text-center" v-else>
+									<span>{{listitem.logmessage}}</span>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<input class="inputMessage" placeholder="Type here..." v-model="usermessage" @keyup.enter="sendMessage" />
+
+				</div>
+				<div class="col-md-4" style="height:100%">
+					<div class="chatArea">
+						<ul class="roomlist">
+							<li v-for="room in rooms" v-on:click="switchroom(room)">{{room}}</li>
+						</ul>
+					</div>
+					<input type="text" class="addroom" placeholder="Enter roomname ..." v-model="roomname" @keyup.enter="addroom">
+				</div>
+			</li>
+			<li class="login page" v-if="show">
+				<div class="form">
+					<h3 class="title">What's your nickname?</h3>
+					<input class="usernameInput" type="text" maxlength="14" v-model="username" @keyup.enter="setUsername" />
+				</div>
+			</li>
+		</ul>
+	</div>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/main.js"></script>
+</body>
+
+</html>
